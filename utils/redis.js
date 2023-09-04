@@ -4,16 +4,13 @@ import { createClient } from 'redis';
 import { promisify } from 'util';
 
 class RedisClient {
-  _connected = true;
   constructor() {
+    this._connected = true;
     this._client = createClient()
       .on('error', (error) => {
         console.log(error);
         this._connected = false;
       });
-      //.on('connect', () => {
-      //  this._connected = true;
-      //});
   }
 
   isAlive() {
@@ -26,7 +23,7 @@ class RedisClient {
   }
 
   set(key, value, exp) {
-    this._client.set(key, value, (error, reply) => {
+    this._client.set(key, value, (error) => {
       if (!error) {
         this._client.expire(key, exp);
       }
