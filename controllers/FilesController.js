@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-useless-rename
 import { ObjectId as ObjectId } from 'mongodb';
 import fs from 'fs';
+import mimeTypes from 'mime-types';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import dbClient from '../utils/db';
@@ -194,6 +195,37 @@ class FilesController {
     response
       .status(200)
       .send(file);
+  }
+
+  static async getFile(request, response) {
+    const token = request.headers['x-token'];
+    const userId = await redisClient.get(`auth_${token}`);
+    const fileId = request.params.id;
+    const file = await dbClient.findOne('files', { _id: ObjectId(fileId) });
+    if (!file || (!file.isPublic && !userId)) {
+      response
+        .status(404)
+        .send({ error: 'Not found' });
+      return;
+    }
+    if (file.type === 'folder') {
+      response
+        .status(400)
+        .send("A folder doesn't have content");
+      return;
+    }
+    fs.readFile(file.localPath, 'utf-8', (error, data) => {
+      if (error) {
+        response
+          .status(404)
+          .send({ error: 'Not found' });
+      } else {
+        response
+          .setHeader('Content-Type', mimeTypes.lookup(file.name))
+          .status(200)
+          .send(data);
+      }
+    });
   }
 }
 
