@@ -45,6 +45,10 @@ class DBClient {
     return this._client.collection(collection).findOne(data);
   }
 
+  updateOne(collection, filterData, updateData) {
+    return this._client.collection(collection).updateOne(filterData, { $set: updateData });
+  }
+
   getPage(collection, page, data) {
     const pipeline = [
       { $match: data },
