@@ -16,7 +16,7 @@ class UsersController {
     if (await dbClient.findOne('users', { 'email': email })) {
       response
         .status(400)
-        .send({ error: 'Already exists' });
+        .send({ error: 'Already exist' });
       return;
     }
     const insertResponse = await dbClient.insertOne('users', {
