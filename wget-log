@@ -1,0 +1,11 @@
+--2023-09-06 19:15:52--  https://th.bing.com/th/id/OIP.m3-LKa5qjiaTZJBy7a3KfQHaHa?pid=ImgDet
+Resolving th.bing.com (th.bing.com)... 2.16.244.155, 2.16.244.161, 2.16.244.129, ...
+Connecting to th.bing.com (th.bing.com)|2.16.244.155|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 26301 (26K) [image/jpeg]
+Saving to: ‘image.png’
+
+image.png                 0%[                             ]       0  --.-KB/s               image.png               100%[============================>]  25.68K  --.-KB/s    in 0.05s   
+
+2023-09-06 19:15:53 (535 KB/s) - ‘image.png’ saved [26301/26301]
+
