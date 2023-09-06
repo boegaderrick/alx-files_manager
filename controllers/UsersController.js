@@ -1,5 +1,8 @@
+// eslint-disable-next-line no-useless-rename
+import { ObjectId as ObjectId } from 'mongodb';
 import sha1 from 'sha1';
 import dbClient from '../utils/db';
+import redisClient from '../utils/redis';
 
 class UsersController {
   static async postNew(request, response) {
@@ -25,6 +28,21 @@ class UsersController {
     response
       .status(201)
       .send({ 'email': email, 'id': insertResponse.insertedId });
+  }
+
+  static async getMe(request, response) {
+    const token = request.headers['x-token'];
+    const userId = await redisClient.get(`auth_${token}`);
+    const user = await dbClient.findOne('users', { _id: ObjectId(userId) });
+    if (!userId || !user) {
+      response
+        .status(401)
+        .send({ error: 'Unauthorized' });
+      return;
+    }
+    response
+      .status(200)
+      .send({ email: user.email, id: user._id });
   }
 }
 
