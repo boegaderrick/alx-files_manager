@@ -36,6 +36,14 @@ class DBClient {
     }
     return undefined;
   }
+
+  insertOne(collection, data) {
+    return this._client.collection(collection).insertOne(data);
+  }
+
+  findOne(collection, data) {
+    return this._client.collection(collection).findOne(data);
+  }
 }
 
 const dbClient = new DBClient();
