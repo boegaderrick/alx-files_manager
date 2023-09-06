@@ -44,6 +44,15 @@ class DBClient {
   findOne(collection, data) {
     return this._client.collection(collection).findOne(data);
   }
+
+  getPage(collection, page, data) {
+    const pipeline = [
+      { $match: data },
+      { $skip: 20 * page },
+      { $limit: 20 },
+    ];
+    return this._client.collection(collection).aggregate(pipeline).toArray();
+  }
 }
 
 const dbClient = new DBClient();
